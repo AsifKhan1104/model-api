@@ -3,12 +3,15 @@ from pydantic import BaseModel
 from transformers import pipeline
 
 app = FastAPI()
-summarizer = pipeline("summarization", model="t5-small")
+summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
 
 class SummarizeRequest(BaseModel):
     text: str
 
-@app.post("/summarize")
+class SummarizeResponse(BaseModel):
+    summary: str
+
+@app.post("/summarize", response_model=SummarizeResponse)
 def summarize(request: SummarizeRequest):
-    summary = summarizer(request.text, max_length=140, min_length=30, do_sample=False)
-    return {"summary": summary[0]["summary_text"]}
+    result = summarizer(req.text, max_length=140, min_length=30, do_sample=False)
+    return SummarizeResponse(summary=result[0]["summary_text"])
