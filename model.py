@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from transformers import pipeline
 
 app = FastAPI()
-summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+summarizer = pipeline("summarization", model="sshleifer/tiny-t5")
 
 class SummarizeRequest(BaseModel):
     text: str
